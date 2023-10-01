@@ -43,15 +43,27 @@ public class ClientController {
 
     @PutMapping("/client/{id}")
     public ResponseEntity<Client> modifyClient(@PathVariable("id") Long id,
-                                               @RequestBody Client client) {
+                                               @RequestBody Client client)
+    {
         try {
             Client newClientVals = clientServiceImpl.updaClient(client, id);
-            if (newClientVals != null) {
-                return new ResponseEntity<>(newClientVals, HttpStatus.OK);
-            } else {
+            if (newClientVals == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(newClientVals, HttpStatus.OK);
             }
         } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/client/{id}")
+    public ResponseEntity<HttpStatus> deleteClient(@PathVariable("id") Long id) {
+        try {
+            clientServiceImpl.deleteClient(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

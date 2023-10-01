@@ -11,10 +11,11 @@ import java.util.Date;
 import java.util.Optional;
 
 @Service
-public class ClientServiceImpl implements ClientService{
+public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
     @Override
     public Client saveClient(Client client) {
         return clientRepository.save(client);
@@ -32,27 +33,22 @@ public class ClientServiceImpl implements ClientService{
 
     @Override
     public Client updaClient(Client client, Long clientId) {
-       Optional<Client> clientDB = findClientById(clientId);
-       if (clientDB.isPresent()){
-           Client newClientVals = clientDB.get();
-           if (client.getName() != null) {
-               newClientVals.setName(client.getName());
-           }
-           if (client.getAddress() != null){
-               newClientVals.setAddress(client.getAddress());
-           }
-               newClientVals.addInvoice(client.getInvoices());
-           return clientRepository.save(newClientVals);
-       }
-       else {
-           return null;
-       }
+        Optional<Client> clientDB = findClientById(clientId);
+        if (clientDB.isPresent()) {
+            Client newClientVals = clientDB.get();
+            newClientVals.setName(client.getName());
+            newClientVals.setAddress(client.getAddress());
+            newClientVals.setInvoices(client.getInvoices());
+            return clientRepository.save(newClientVals);
+        } else {
+            return null;
+        }
 
     }
 
     @Override
     public void deleteClient(Long clientId) {
-       clientRepository.deleteById(clientId);
+        clientRepository.deleteById(clientId);
     }
 
     @Override
