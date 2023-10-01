@@ -3,9 +3,10 @@ package com.example.clientcrud.services;
 import com.example.clientcrud.entities.Product;
 import com.example.clientcrud.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+@Service
 public class ProductServiceImpl implements ProductService{
     @Autowired
     ProductRepository productRepository;
