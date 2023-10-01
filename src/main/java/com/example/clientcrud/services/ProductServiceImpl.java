@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepository productRepository;
+
     @Override
     public Product saveProduct(Product product) {
         return productRepository.save(product);
@@ -34,8 +36,7 @@ public class ProductServiceImpl implements ProductService{
             newProductVals.setPrice(product.getPrice());
             newProductVals.setProductInvoices(product.getProductInvoices());
             return productRepository.save(newProductVals);
-        }
-        else {
+        } else {
             return null;
         }
     }
