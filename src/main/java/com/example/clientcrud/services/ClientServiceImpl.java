@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class ClientServiceImpl implements ClientService{
@@ -25,12 +26,28 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
+    public Optional<Client> findClientById(Long id) {
+        return clientRepository.findById(id);
+    }
+
+    @Override
     public Client updaClient(Client client, Long clientId) {
-       Client clientDB = clientRepository.findById(clientId).get();
-       clientDB.setName(client.getName());
-       clientDB.setAddress(client.getAddress());
-       clientDB.setInvoices(client.getInvoices());
-       return clientRepository.save(clientDB);
+       Optional<Client> clientDB = findClientById(clientId);
+       if (clientDB.isPresent()){
+           Client newClientVals = clientDB.get();
+           if (client.getName() != null) {
+               newClientVals.setName(client.getName());
+           }
+           if (client.getAddress() != null){
+               newClientVals.setAddress(client.getAddress());
+           }
+               newClientVals.addInvoice(client.getInvoices());
+           return clientRepository.save(newClientVals);
+       }
+       else {
+           return null;
+       }
+
     }
 
     @Override
