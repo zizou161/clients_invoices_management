@@ -1,9 +1,7 @@
 package com.example.clientcrud.controllers;
 
 import com.example.clientcrud.entities.Invoice;
-import com.example.clientcrud.entities.Product;
 import com.example.clientcrud.services.InvoiceServiceImpl;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,6 +70,20 @@ public class InvoiceController {
         try {
             invoiceService.deleteInvoice(id);
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/client/{clientId}/invoices")
+    public ResponseEntity<Iterable<Invoice>> getInvoiceByClientId(@PathVariable("clientId") Long clientId) {
+        try {
+            Iterable<Invoice> invoices = invoiceService.findInvoiceByClient(clientId);
+            if (invoices.iterator().hasNext()) {
+                return new ResponseEntity<>(invoices, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
