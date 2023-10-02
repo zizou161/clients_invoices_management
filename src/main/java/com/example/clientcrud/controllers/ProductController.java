@@ -1,12 +1,13 @@
 package com.example.clientcrud.controllers;
 
-import com.example.clientcrud.entities.Client;
 import com.example.clientcrud.entities.Product;
 import com.example.clientcrud.services.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 public class ProductController {
@@ -22,6 +23,18 @@ public class ProductController {
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/product/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        try {
+            Optional<Product> product = productService.findProductById(id);
+            return product
+                    .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

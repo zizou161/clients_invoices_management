@@ -19,42 +19,35 @@ public class InvoiceController {
     @GetMapping("/invoice")
     public ResponseEntity<Iterable<Invoice>> getInvoicesList() {
         try {
-         Iterable<Invoice> invoices = invoiceService.findAllInvoices();
-         if (invoices.iterator().hasNext()) {
-             return new ResponseEntity<>(invoices,HttpStatus.OK);
-         }
-         else {
-             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-         }
-        }
-        catch (Exception ex) {
+            Iterable<Invoice> invoices = invoiceService.findAllInvoices();
+            if (invoices.iterator().hasNext()) {
+                return new ResponseEntity<>(invoices, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/invoice/{id}")
-    public ResponseEntity<Optional<Invoice>> searchInvoiceById(@PathVariable("id") Long id) {
+    public ResponseEntity<Invoice> searchInvoiceById(@PathVariable("id") Long id) {
         try {
             Optional<Invoice> invoice = invoiceService.findInvoiceById(id);
-            if(invoice.isPresent()) {
-                return new ResponseEntity<>(invoice,HttpStatus.OK);
-            }
-            else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        }
-        catch (Exception ex) {
+            return invoice
+                    .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/invoice")
     public ResponseEntity<Invoice> createInvoice(@RequestBody Invoice invoice) {
-        try{
+        try {
             Invoice invoiceCreated = invoiceService.saveInvoice(invoice);
-            return new ResponseEntity<>(invoiceCreated,HttpStatus.CREATED);
-        }
-        catch (Exception ex) {
+            return new ResponseEntity<>(invoiceCreated, HttpStatus.CREATED);
+        } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -69,8 +62,7 @@ public class InvoiceController {
             } else {
                 return new ResponseEntity<>(newInvoiceVals, HttpStatus.OK);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -80,8 +72,7 @@ public class InvoiceController {
         try {
             invoiceService.deleteInvoice(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

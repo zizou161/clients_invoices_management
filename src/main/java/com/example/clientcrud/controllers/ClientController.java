@@ -28,7 +28,18 @@ public class ClientController {
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
+    @GetMapping("/client/{id}")
+    public ResponseEntity<Client> getClientById(@PathVariable("id") Long id) {
+        try {
+            Optional<Client> client = clientServiceImpl.findClientById(id);
+            return client
+                    .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/client")
@@ -43,8 +54,7 @@ public class ClientController {
 
     @PutMapping("/client/{id}")
     public ResponseEntity<Client> modifyClient(@PathVariable("id") Long id,
-                                               @RequestBody Client client)
-    {
+                                               @RequestBody Client client) {
         try {
             Client newClientVals = clientServiceImpl.updaClient(client, id);
             if (newClientVals == null) {
@@ -62,8 +72,7 @@ public class ClientController {
         try {
             clientServiceImpl.deleteClient(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
