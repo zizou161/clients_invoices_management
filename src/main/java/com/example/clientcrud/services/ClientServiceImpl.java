@@ -3,6 +3,8 @@ package com.example.clientcrud.services;
 import com.example.clientcrud.entities.*;
 import com.example.clientcrud.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -32,7 +34,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client updaClient(Client client, Long clientId) {
+    public Client updateClient(Client client, Long clientId) {
         Optional<Client> clientDB = findClientById(clientId);
         if (clientDB.isPresent()) {
             Client newClientVals = clientDB.get();
@@ -49,6 +51,19 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void deleteClient(Long clientId) {
         clientRepository.deleteById(clientId);
+    }
+
+    @Override
+    public Invoice appendInvoice(Invoice invoice, Long clientId) {
+        Optional<Client> client = findClientById(clientId);
+        if (client.isPresent()) {
+            client.get().addInvoice(invoice);
+            clientRepository.save(client.get());
+            return invoice;
+        }
+        else {
+            return null;
+        }
     }
 
     @Override

@@ -1,14 +1,13 @@
 package com.example.clientcrud.controllers;
 
 import com.example.clientcrud.entities.Client;
+import com.example.clientcrud.entities.Invoice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.clientcrud.services.ClientServiceImpl;
 
-import java.awt.*;
-import java.util.Arrays;
 import java.util.Optional;
 
 @RestController
@@ -56,7 +55,7 @@ public class ClientController {
     public ResponseEntity<Client> modifyClient(@PathVariable("id") Long id,
                                                @RequestBody Client client) {
         try {
-            Client newClientVals = clientServiceImpl.updaClient(client, id);
+            Client newClientVals = clientServiceImpl.updateClient(client, id);
             if (newClientVals == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
@@ -72,6 +71,21 @@ public class ClientController {
         try {
             clientServiceImpl.deleteClient(id);
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/client/{clientId}/invoices")
+    public ResponseEntity<Invoice> createInvoiceForClient(@RequestBody Invoice invoice,
+                                                          @PathVariable("clientId") Long clientId) {
+        try {
+            Invoice addedInvoice = clientServiceImpl.appendInvoice(invoice, clientId);
+            if (addedInvoice == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(addedInvoice, HttpStatus.OK);
+            }
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

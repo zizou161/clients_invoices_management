@@ -1,5 +1,6 @@
 package com.example.clientcrud.controllers;
 
+import com.example.clientcrud.entities.Client;
 import com.example.clientcrud.entities.Invoice;
 import com.example.clientcrud.services.InvoiceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class InvoiceController {
         }
     }
 
-    @PostMapping("/invoice")
+/*    @PostMapping("/invoice")
     public ResponseEntity<Invoice> createInvoice(@RequestBody Invoice invoice) {
         try {
             Invoice invoiceCreated = invoiceService.saveInvoice(invoice);
@@ -48,7 +49,7 @@ public class InvoiceController {
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
     @PutMapping("/invoice/{id}")
     public ResponseEntity<Invoice> modifyInvoice(@PathVariable("id") Long id,
@@ -88,6 +89,5 @@ public class InvoiceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 }
