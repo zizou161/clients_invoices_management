@@ -2,6 +2,7 @@ package com.example.clientcrud.controllers;
 
 import com.example.clientcrud.entities.Client;
 import com.example.clientcrud.entities.Invoice;
+import com.example.clientcrud.services.ClientServiceImpl;
 import com.example.clientcrud.services.InvoiceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,8 @@ import java.util.Optional;
 public class InvoiceController {
     @Autowired
     InvoiceServiceImpl invoiceService;
+    @Autowired
+    ClientServiceImpl clientServiceImpl;
 
     @GetMapping("/invoice")
     public ResponseEntity<Iterable<Invoice>> getInvoicesList() {
@@ -84,6 +87,21 @@ public class InvoiceController {
                 return new ResponseEntity<>(invoices, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/client/{clientId}/invoices")
+    public ResponseEntity<Invoice> createInvoiceForClient(@RequestBody Invoice invoice,
+                                                          @PathVariable("clientId") Long clientId) {
+        try {
+            Invoice addedInvoice = clientServiceImpl.appendInvoice(invoice, clientId);
+            if (addedInvoice == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(addedInvoice, HttpStatus.OK);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

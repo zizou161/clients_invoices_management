@@ -76,21 +76,6 @@ public class ClientController {
         }
     }
 
-    @PostMapping("/client/{clientId}/invoices")
-    public ResponseEntity<Invoice> createInvoiceForClient(@RequestBody Invoice invoice,
-                                                          @PathVariable("clientId") Long clientId) {
-        try {
-            Invoice addedInvoice = clientServiceImpl.appendInvoice(invoice, clientId);
-            if (addedInvoice == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            } else {
-                return new ResponseEntity<>(addedInvoice, HttpStatus.OK);
-            }
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 
     @PostMapping("/create_dummy_client")
     public void createDummyClient() {

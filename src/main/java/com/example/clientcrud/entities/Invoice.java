@@ -19,7 +19,6 @@ public class Invoice {
     @JsonIgnore
     @ManyToOne
     private Client client;
-
     @OneToMany(mappedBy = "invoice")
     private List<ProductInvoice> productInvoices = new ArrayList<>();
 
