@@ -1,7 +1,6 @@
 package com.example.clientcrud.services;
 
 import com.example.clientcrud.entities.Invoice;
-import com.example.clientcrud.entities.Product;
 import com.example.clientcrud.repositories.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
