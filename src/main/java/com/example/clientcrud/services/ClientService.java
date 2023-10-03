@@ -16,7 +16,6 @@ public interface ClientService {
     Client updateClient(Client client, Long clientId);
 
     void deleteClient(Long clientId);
-
     Invoice appendInvoice(Invoice invoice, Long clientId);
 
     void createDummyClient();
