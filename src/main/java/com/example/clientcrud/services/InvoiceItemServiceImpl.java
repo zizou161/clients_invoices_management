@@ -1,7 +1,6 @@
 package com.example.clientcrud.services;
 
-import com.example.clientcrud.entities.InvoiceItem;
-import com.example.clientcrud.entities.InvoiceItemPK;
+import com.example.clientcrud.entities.*;
 import com.example.clientcrud.repositories.InvoiceItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,5 +32,13 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public InvoiceItem appendInvoiceItem(Invoice invoice, Product product, long quantity) {
+        InvoiceItem invoiceItem = new InvoiceItem(invoice, product, quantity);
+        invoice.addInvoiceItem(invoiceItem);
+        product.addInvoiceItem(invoiceItem);
+        return invoiceItemRepository.save(invoiceItem);
     }
 }

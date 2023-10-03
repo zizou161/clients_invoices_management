@@ -25,4 +25,12 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     List<InvoiceItem> invoiceItems = new ArrayList<>();
+
+    public void addInvoiceItem(InvoiceItem invoiceItem) {
+        if (this.invoiceItems == null) {
+            this.invoiceItems = new ArrayList<>();
+        }
+        invoiceItem.setProduct(this);
+        this.invoiceItems.add(invoiceItem);
+    }
 }
