@@ -1,4 +1,4 @@
-package com.example.clientcrud.dto;
+package com.example.clientcrud.dto.response;
 
 import com.example.clientcrud.entities.InvoiceItem;
 import lombok.Getter;

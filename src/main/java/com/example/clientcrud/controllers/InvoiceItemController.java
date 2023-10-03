@@ -1,7 +1,7 @@
 package com.example.clientcrud.controllers;
 
-import com.example.clientcrud.dto.InvoiceItemRequestDto;
-import com.example.clientcrud.dto.InvoiceItemResponseDto;
+import com.example.clientcrud.dto.request.InvoiceItemRequestDto;
+import com.example.clientcrud.dto.response.InvoiceItemResponseDto;
 import com.example.clientcrud.entities.Invoice;
 import com.example.clientcrud.entities.InvoiceItem;
 import com.example.clientcrud.entities.InvoiceItemPK;
