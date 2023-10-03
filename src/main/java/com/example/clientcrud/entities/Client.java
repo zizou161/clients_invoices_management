@@ -2,6 +2,7 @@ package com.example.clientcrud.entities;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ public class Client {
 
     @Id
     private String uuid = UUID.randomUUID().toString();
+    @NotBlank
     private String name;
     private String address;
 

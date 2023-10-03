@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,8 +22,8 @@ public class Product {
     @Id
     private String uuid = UUID.randomUUID().toString();
     private String name;
+    @Positive
     private BigDecimal price;
-
     @OneToMany(mappedBy = "product")
     List<InvoiceItem> invoiceItems = new ArrayList<>();
 

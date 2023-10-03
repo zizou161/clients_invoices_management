@@ -2,6 +2,9 @@ package com.example.clientcrud.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,10 +19,13 @@ import java.util.UUID;
 public class Invoice {
     @Id
     private String uuid = UUID.randomUUID().toString();
+    @Past
     private Date date;
+    @NotNull
     @JsonIgnore
     @ManyToOne
     private Client client;
+    @NotEmpty
     @OneToMany(mappedBy = "invoice")
     private List<InvoiceItem> invoiceItems = new ArrayList<>();
 
