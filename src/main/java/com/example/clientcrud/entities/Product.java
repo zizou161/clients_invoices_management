@@ -17,8 +17,6 @@ import java.util.UUID;
 @Setter
 public class Product {
     @Id
-    @GeneratedValue
-    private Long id;
     private String uuid = UUID.randomUUID().toString();
     private String name;
     private BigDecimal price;

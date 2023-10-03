@@ -30,7 +30,7 @@ public class ClientController {
     }
 
     @GetMapping("/client/{id}")
-    public ResponseEntity<Client> getClientById(@PathVariable("id") Long id) {
+    public ResponseEntity<Client> getClientById(@PathVariable("id") String id) {
         try {
             Optional<Client> client = clientServiceImpl.findClientById(id);
             return client
@@ -52,7 +52,7 @@ public class ClientController {
     }
 
     @PutMapping("/client/{id}")
-    public ResponseEntity<Client> modifyClient(@PathVariable("id") Long id,
+    public ResponseEntity<Client> modifyClient(@PathVariable("id") String id,
                                                @RequestBody Client client) {
         try {
             Client newClientVals = clientServiceImpl.updateClient(client, id);
@@ -67,7 +67,7 @@ public class ClientController {
     }
 
     @DeleteMapping("/client/{id}")
-    public ResponseEntity<HttpStatus> deleteClient(@PathVariable("id") Long id) {
+    public ResponseEntity<HttpStatus> deleteClient(@PathVariable("id") String id) {
         try {
             clientServiceImpl.deleteClient(id);
             return new ResponseEntity<>(HttpStatus.OK);

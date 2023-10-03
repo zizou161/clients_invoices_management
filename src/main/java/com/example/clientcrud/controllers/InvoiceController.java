@@ -32,7 +32,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/invoice/{id}")
-    public ResponseEntity<Invoice> searchInvoiceById(@PathVariable("id") Long id) {
+    public ResponseEntity<Invoice> searchInvoiceById(@PathVariable("id") String id) {
         try {
             Optional<Invoice> invoice = invoiceService.findInvoiceById(id);
             return invoice
@@ -44,7 +44,7 @@ public class InvoiceController {
     }
 
     @PutMapping("/invoice/{id}")
-    public ResponseEntity<Invoice> modifyInvoice(@PathVariable("id") Long id,
+    public ResponseEntity<Invoice> modifyInvoice(@PathVariable("id") String id,
                                                  @RequestBody Invoice invoice) {
         try {
             Invoice newInvoiceVals = invoiceService.updateInvoice(invoice, id);
@@ -59,7 +59,7 @@ public class InvoiceController {
     }
 
     @DeleteMapping("/invoice/{id}")
-    public ResponseEntity<HttpStatus> deleteInvoice(@PathVariable("id") Long id) {
+    public ResponseEntity<HttpStatus> deleteInvoice(@PathVariable("id") String id) {
         try {
             invoiceService.deleteInvoice(id);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -69,7 +69,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/client/{clientId}/invoices")
-    public ResponseEntity<Iterable<Invoice>> getInvoiceByClientId(@PathVariable("clientId") Long clientId) {
+    public ResponseEntity<Iterable<Invoice>> getInvoiceByClientId(@PathVariable("clientId") String clientId) {
         try {
             Iterable<Invoice> invoices = invoiceService.findInvoiceByClient(clientId);
             if (invoices.iterator().hasNext()) {
@@ -84,7 +84,7 @@ public class InvoiceController {
 
     @PostMapping("/client/{clientId}/invoices")
     public ResponseEntity<Invoice> createInvoiceForClient(@RequestBody Invoice invoice,
-                                                          @PathVariable("clientId") Long clientId) {
+                                                          @PathVariable("clientId") String clientId) {
         try {
             Invoice addedInvoice = clientServiceImpl.appendInvoice(invoice, clientId);
             if (addedInvoice == null) {

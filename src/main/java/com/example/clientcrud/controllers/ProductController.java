@@ -29,7 +29,7 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<Product> getProductById(@PathVariable String id) {
         try {
             Optional<Product> product = productService.findProductById(id);
             return product
@@ -51,7 +51,7 @@ public class ProductController {
     }
 
     @PutMapping("/product/{id}")
-    public ResponseEntity<Product> modifyProduct(@PathVariable("id") Long id,
+    public ResponseEntity<Product> modifyProduct(@PathVariable("id") String id,
                                                  @RequestBody Product product) {
         try {
             Product newProductVals = productService.updateProduct(product, id);
@@ -66,7 +66,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/product/{id}")
-    public ResponseEntity<HttpStatus> deleteProduct(@PathVariable("id") Long id) {
+    public ResponseEntity<HttpStatus> deleteProduct(@PathVariable("id") String id) {
         try {
             productService.deleteProduct(id);
             return new ResponseEntity<>(HttpStatus.OK);

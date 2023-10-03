@@ -15,8 +15,6 @@ import java.util.UUID;
 @Setter
 public class Invoice {
     @Id
-    @GeneratedValue
-    private Long id;
     private String uuid = UUID.randomUUID().toString();
     private Date date;
     @JsonIgnore

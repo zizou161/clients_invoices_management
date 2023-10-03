@@ -15,8 +15,6 @@ import java.util.UUID;
 public class Client {
 
     @Id
-    @GeneratedValue
-    private Long id;
     private String uuid = UUID.randomUUID().toString();
     private String name;
     private String address;

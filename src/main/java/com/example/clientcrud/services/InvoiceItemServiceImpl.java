@@ -13,8 +13,8 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     InvoiceItemRepository invoiceItemRepository;
 
     @Override
-    public Iterable<InvoiceItem> findAllInvoiceItems(Long invoiceId) {
-        return invoiceItemRepository.findInvoiceItemByInvoice_Id(invoiceId);
+    public Iterable<InvoiceItem> findAllInvoiceItems(String invoiceId) {
+        return invoiceItemRepository.findInvoiceItemByInvoice_Uuid(invoiceId);
     }
 
     @Override

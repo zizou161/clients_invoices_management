@@ -10,6 +10,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class InvoiceItemPK implements Serializable {
-    private Long productId;
-    private Long invoiceId;
+    private String productId;
+    private String invoiceId;
 }

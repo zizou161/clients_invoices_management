@@ -10,11 +10,11 @@ public interface InvoiceService {
 
     Iterable<Invoice> findAllInvoices();
 
-    Optional<Invoice> findInvoiceById(Long id);
+    Optional<Invoice> findInvoiceById(String id);
 
-    Invoice updateInvoice(Invoice invoice, Long id);
+    Invoice updateInvoice(Invoice invoice, String id);
 
-    void deleteInvoice(Long id);
+    void deleteInvoice(String id);
 
-    Iterable<Invoice> findInvoiceByClient(Long clientId);
+    Iterable<Invoice> findInvoiceByClient(String clientId);
 }

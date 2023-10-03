@@ -14,8 +14,8 @@ public class InvoiceItem {
 
     public InvoiceItem(Invoice invoice, Product product, long quantity) {
         InvoiceItemPK pk = new InvoiceItemPK();
-        pk.setProductId(product.getId());
-        pk.setInvoiceId(invoice.getId());
+        pk.setProductId(product.getUuid());
+        pk.setInvoiceId(invoice.getUuid());
         this.invoiceItemPK = pk;
         this.setInvoice(invoice);
         this.setProduct(product);

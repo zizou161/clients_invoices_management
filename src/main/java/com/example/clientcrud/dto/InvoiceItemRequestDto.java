@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class InvoiceItemRequestDto {
 
-    private Long productId;
-    private long invoiceId;
+    private String productId;
+    private String invoiceId;
     private long quantity;
 }

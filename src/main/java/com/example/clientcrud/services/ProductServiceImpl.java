@@ -23,12 +23,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> findProductById(Long id) {
+    public Optional<Product> findProductById(String id) {
         return productRepository.findById(id);
     }
 
     @Override
-    public Product updateProduct(Product product, Long id) {
+    public Product updateProduct(Product product, String id) {
         Optional<Product> productDB = findProductById(id);
         if (productDB.isPresent()) {
             Product newProductVals = productDB.get();
@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(Long id) {
+    public void deleteProduct(String id) {
         productRepository.deleteById(id);
     }
 }

@@ -21,12 +21,12 @@ public class InvoiceServiceImpl implements InvoiceService{
     }
 
     @Override
-    public Optional<Invoice> findInvoiceById(Long id) {
+    public Optional<Invoice> findInvoiceById(String id) {
         return invoiceRepository.findById(id);
     }
 
     @Override
-    public Invoice updateInvoice(Invoice invoice, Long id) {
+    public Invoice updateInvoice(Invoice invoice, String id) {
         Optional<Invoice> invoiceDB = findInvoiceById(id);
         if (invoiceDB.isPresent()) {
             Invoice newInvoiceVals = invoiceDB.get();
@@ -39,12 +39,12 @@ public class InvoiceServiceImpl implements InvoiceService{
     }
 
     @Override
-    public void deleteInvoice(Long id) {
+    public void deleteInvoice(String id) {
         invoiceRepository.deleteById(id);
     }
 
     @Override
-    public Iterable<Invoice> findInvoiceByClient(Long clientId) {
-        return invoiceRepository.findInvoiceByClientId(clientId);
+    public Iterable<Invoice> findInvoiceByClient(String clientId) {
+        return invoiceRepository.findInvoiceByClient_Uuid(clientId);
     }
 }

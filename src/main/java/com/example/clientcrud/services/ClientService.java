@@ -11,12 +11,12 @@ public interface ClientService {
 
     Iterable<Client> findAllClients();
 
-    Optional<Client> findClientById(Long id);
+    Optional<Client> findClientById(String id);
 
-    Client updateClient(Client client, Long clientId);
+    Client updateClient(Client client, String clientId);
 
-    void deleteClient(Long clientId);
-    Invoice appendInvoice(Invoice invoice, Long clientId);
+    void deleteClient(String clientId);
+    Invoice appendInvoice(Invoice invoice, String clientId);
 
     void createDummyClient();
 }

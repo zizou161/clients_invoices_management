@@ -26,12 +26,12 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Optional<Client> findClientById(Long id) {
+    public Optional<Client> findClientById(String id) {
         return clientRepository.findById(id);
     }
 
     @Override
-    public Client updateClient(Client client, Long clientId) {
+    public Client updateClient(Client client, String clientId) {
         Optional<Client> clientDB = findClientById(clientId);
         if (clientDB.isPresent()) {
             Client newClientVals = clientDB.get();
@@ -46,12 +46,12 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void deleteClient(Long clientId) {
+    public void deleteClient(String clientId) {
         clientRepository.deleteById(clientId);
     }
 
     @Override
-    public Invoice appendInvoice(Invoice invoice, Long clientId) {
+    public Invoice appendInvoice(Invoice invoice, String clientId) {
         Optional<Client> client = findClientById(clientId);
         if (client.isPresent()) {
             client.get().addInvoice(invoice);

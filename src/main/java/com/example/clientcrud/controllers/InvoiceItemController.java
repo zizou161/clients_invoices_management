@@ -1,6 +1,7 @@
 package com.example.clientcrud.controllers;
 
 import com.example.clientcrud.dto.InvoiceItemRequestDto;
+import com.example.clientcrud.dto.InvoiceItemResponseDto;
 import com.example.clientcrud.entities.Invoice;
 import com.example.clientcrud.entities.InvoiceItem;
 import com.example.clientcrud.entities.InvoiceItemPK;
@@ -26,7 +27,7 @@ public class InvoiceItemController {
     ProductServiceImpl productService;
 
     @GetMapping("/invoice/{invoiceId}/item")
-    public ResponseEntity<Iterable<InvoiceItem>> listItemsOfInvoice(@PathVariable("invoiceId") Long invoiceId) {
+    public ResponseEntity<Iterable<InvoiceItem>> listItemsOfInvoice(@PathVariable("invoiceId") String invoiceId) {
         try {
             Iterable<InvoiceItem> invoiceItems = invoiceItemService.findAllInvoiceItems(invoiceId);
             if (invoiceItems.iterator().hasNext()) {
@@ -52,13 +53,14 @@ public class InvoiceItemController {
     }
 
     @PostMapping("/invoice_item")
-    public ResponseEntity<InvoiceItem> createInvoiceItem(@RequestBody InvoiceItemRequestDto invoiceItem) {
+    public ResponseEntity<InvoiceItemResponseDto> createInvoiceItem(@RequestBody InvoiceItemRequestDto invoiceItem) {
         try {
             Optional<Invoice> invoice = invoiceService.findInvoiceById(invoiceItem.getInvoiceId());
             Optional<Product> product = productService.findProductById(invoiceItem.getProductId());
             if (invoice.isPresent() && product.isPresent()) {
                 InvoiceItem invoiceItemSaved = invoiceItemService.appendInvoiceItem(invoice.get(), product.get(), invoiceItem.getQuantity());
-                return new ResponseEntity<>(invoiceItemSaved, HttpStatus.CREATED);
+                InvoiceItemResponseDto invoiceItemResponse = new InvoiceItemResponseDto(invoiceItemSaved);
+                return new ResponseEntity<>(invoiceItemResponse, HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

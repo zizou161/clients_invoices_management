@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface InvoiceItemService {
 
-    Iterable<InvoiceItem> findAllInvoiceItems(Long invoiceId);
+    Iterable<InvoiceItem> findAllInvoiceItems(String invoiceId);
     Optional<InvoiceItem> findInvoiceItemById(InvoiceItemPK invoiceItemPK);
 
     InvoiceItem updateInvoiceItem(InvoiceItem invoiceItem, InvoiceItemPK invoiceItemPK);

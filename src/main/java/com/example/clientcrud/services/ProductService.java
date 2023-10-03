@@ -10,10 +10,10 @@ public interface ProductService {
 
     Iterable<Product> findAllProducts();
 
-    Optional<Product> findProductById(Long id);
+    Optional<Product> findProductById(String id);
 
-    Product updateProduct(Product product, Long id);
+    Product updateProduct(Product product, String id);
 
-    void deleteProduct(Long id);
+    void deleteProduct(String id);
 
 }
