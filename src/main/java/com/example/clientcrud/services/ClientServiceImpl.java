@@ -3,12 +3,9 @@ package com.example.clientcrud.services;
 import com.example.clientcrud.entities.*;
 import com.example.clientcrud.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
@@ -60,8 +57,7 @@ public class ClientServiceImpl implements ClientService {
             client.get().addInvoice(invoice);
             clientRepository.save(client.get());
             return invoice;
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -71,15 +67,15 @@ public class ClientServiceImpl implements ClientService {
         Client client = new Client();
         Invoice invoice = new Invoice();
         Product product = new Product();
-        ProductInvoice productInvoice = new ProductInvoice();
+        InvoiceItem invoiceItem = new InvoiceItem();
         client.setName("khorsi mustapha");
         client.setAddress("cite selem1 n80");
         invoice.setDate(new Date());
         product.setName("shampoo");
         product.setPrice(new BigDecimal(20));
-        productInvoice.setInvoice(invoice);
-        productInvoice.setProduct(product);
-        productInvoice.setQuantity(3);
+        invoiceItem.setInvoice(invoice);
+        invoiceItem.setProduct(product);
+        invoiceItem.setQuantity(3);
         client.addInvoice(invoice);
         clientRepository.save(client);
     }

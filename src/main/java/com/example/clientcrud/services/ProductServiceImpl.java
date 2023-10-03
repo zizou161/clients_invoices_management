@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
             Product newProductVals = productDB.get();
             newProductVals.setName(product.getName());
             newProductVals.setPrice(product.getPrice());
-            newProductVals.setProductInvoices(product.getProductInvoices());
+            newProductVals.setInvoiceItems(product.getInvoiceItems());
             return productRepository.save(newProductVals);
         } else {
             return null;

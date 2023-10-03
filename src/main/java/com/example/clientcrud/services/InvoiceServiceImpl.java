@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 @Service
-public class InvoiceServiceImpl implements InvoiceService{
+public class InvoiceServiceImpl implements InvoiceService {
     @Autowired
     InvoiceRepository invoiceRepository;
+
     @Override
     public Invoice saveInvoice(Invoice invoice) {
         return invoiceRepository.save(invoice);
@@ -31,7 +33,7 @@ public class InvoiceServiceImpl implements InvoiceService{
         if (invoiceDB.isPresent()) {
             Invoice newInvoiceVals = invoiceDB.get();
             newInvoiceVals.setDate(invoice.getDate());
-            newInvoiceVals.setProductInvoices(invoice.getProductInvoices());
+            newInvoiceVals.setInvoiceItems(invoice.getInvoiceItems());
             return invoiceRepository.save(newInvoiceVals);
         } else {
             return null;

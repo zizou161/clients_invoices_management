@@ -6,8 +6,10 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
-@Embeddable @Getter @Setter
-public class ProductInvoicePK implements Serializable {
+@Embeddable
+@Getter
+@Setter
+public class InvoiceItemPK implements Serializable {
     private Long productId;
     private Long invoiceId;
 }

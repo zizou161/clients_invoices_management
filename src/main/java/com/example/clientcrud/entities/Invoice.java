@@ -10,9 +10,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Entity @Getter @Setter
+@Entity
+@Getter
+@Setter
 public class Invoice {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
     private String uuid = UUID.randomUUID().toString();
     private Date date;
@@ -20,6 +23,6 @@ public class Invoice {
     @ManyToOne
     private Client client;
     @OneToMany(mappedBy = "invoice")
-    private List<ProductInvoice> productInvoices = new ArrayList<>();
+    private List<InvoiceItem> invoiceItems = new ArrayList<>();
 
 }

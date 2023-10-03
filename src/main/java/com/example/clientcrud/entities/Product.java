@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Entity @Getter @Setter
+@Entity
+@Getter
+@Setter
 public class Product {
     @Id
     @GeneratedValue
@@ -22,5 +24,5 @@ public class Product {
     private BigDecimal price;
 
     @OneToMany(mappedBy = "product")
-    List<ProductInvoice> productInvoices = new ArrayList<>();
+    List<InvoiceItem> invoiceItems = new ArrayList<>();
 }

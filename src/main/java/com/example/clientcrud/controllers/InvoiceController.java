@@ -1,6 +1,5 @@
 package com.example.clientcrud.controllers;
 
-import com.example.clientcrud.entities.Client;
 import com.example.clientcrud.entities.Invoice;
 import com.example.clientcrud.services.ClientServiceImpl;
 import com.example.clientcrud.services.InvoiceServiceImpl;
@@ -43,16 +42,6 @@ public class InvoiceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-/*    @PostMapping("/invoice")
-    public ResponseEntity<Invoice> createInvoice(@RequestBody Invoice invoice) {
-        try {
-            Invoice invoiceCreated = invoiceService.saveInvoice(invoice);
-            return new ResponseEntity<>(invoiceCreated, HttpStatus.CREATED);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }*/
 
     @PutMapping("/invoice/{id}")
     public ResponseEntity<Invoice> modifyInvoice(@PathVariable("id") Long id,

@@ -6,11 +6,13 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Entity @Getter @Setter
-public class ProductInvoice {
+@Entity
+@Getter
+@Setter
+public class InvoiceItem {
 
     @EmbeddedId
-    private ProductInvoicePK productInvoicePK;
+    private InvoiceItemPK invoiceItemPK;
     private String uuid = UUID.randomUUID().toString();
 
     @ManyToOne
