@@ -25,7 +25,7 @@ public class Invoice {
     @JsonIgnore
     @ManyToOne
     private Client client;
-    @NotEmpty
+    @NotEmpty(message = "Invoice must have at least one element")
     @OneToMany(mappedBy = "invoice")
     private List<InvoiceItem> invoiceItems = new ArrayList<>();
 
