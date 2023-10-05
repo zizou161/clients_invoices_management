@@ -15,4 +15,6 @@ public interface InvoiceItemService {
     InvoiceItem updateInvoiceItem(InvoiceItem invoiceItem, InvoiceItemPK invoiceItemPK);
 
     InvoiceItem appendInvoiceItem(Invoice invoice, Product product, long quantity);
+
+    Optional<InvoiceItem> saveInvoiceItem(InvoiceItem item, Invoice invoice);
 }

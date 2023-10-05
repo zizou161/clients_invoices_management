@@ -17,7 +17,6 @@ public class InvoiceItemResponseDto {
 
     public InvoiceItemResponseDto(){}
     public InvoiceItemResponseDto(InvoiceItem invoiceItem) {
-        this.invoiceId = invoiceItem.getInvoiceItemPK().getInvoiceId();
         this.productPrice = invoiceItem.getProduct().getPrice();
         this.productName = invoiceItem.getProduct().getName();
         this.quantity = invoiceItem.getQuantity();

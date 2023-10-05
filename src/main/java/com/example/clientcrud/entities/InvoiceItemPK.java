@@ -12,4 +12,9 @@ import java.io.Serializable;
 public class InvoiceItemPK implements Serializable {
     private String productId;
     private String invoiceId;
+    public InvoiceItemPK(String invoiceId, String productId) {
+        this.invoiceId = invoiceId;
+        this.productId = productId;
+    }
+    public InvoiceItemPK(){}
 }

@@ -1,15 +1,23 @@
 package com.example.clientcrud.services;
 
-import com.example.clientcrud.entities.Invoice;
+import com.example.clientcrud.dto.request.InvoiceRequestDto;
+import com.example.clientcrud.entities.*;
 import com.example.clientcrud.repositories.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
+
 @Service
-public class InvoiceServiceImpl implements InvoiceService{
+public class InvoiceServiceImpl implements InvoiceService {
     @Autowired
     InvoiceRepository invoiceRepository;
+    @Autowired
+    InvoiceItemServiceImpl invoiceItemService;
+    @Autowired
+    ProductServiceImpl productService;
+
     @Override
     public Invoice saveInvoice(Invoice invoice) {
         return invoiceRepository.save(invoice);
@@ -47,4 +55,19 @@ public class InvoiceServiceImpl implements InvoiceService{
     public Iterable<Invoice> findInvoiceByClient(String clientId) {
         return invoiceRepository.findInvoiceByClient_Uuid(clientId);
     }
+
+    @Override
+    public Optional<Invoice> appendInvoiceToClient(InvoiceRequestDto invoice, Client client, Product product) {
+        Invoice invoiceEntity = new Invoice();
+        InvoiceItem invoiceItem = new InvoiceItem();
+        invoiceEntity.setDate(new Date());
+        invoiceEntity.setClient(client);
+        invoiceItem.setProduct(product);
+        invoiceItem.setInvoice(invoiceEntity);
+        invoiceItem.setQuantity(invoice.getQuantity());
+        invoiceEntity.addInvoiceItem(invoiceItem);
+        client.addInvoice(invoiceEntity);
+        return Optional.of(invoiceRepository.save(invoiceEntity));
+    }
+
 }

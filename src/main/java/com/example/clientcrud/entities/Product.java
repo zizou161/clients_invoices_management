@@ -1,11 +1,6 @@
 package com.example.clientcrud.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,14 +8,13 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 public class Product {
-    @Id
-    private String uuid = UUID.randomUUID().toString();
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    private String uuid;
     private String name;
     @Positive
     private BigDecimal price;

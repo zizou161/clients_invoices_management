@@ -11,10 +11,12 @@ import java.util.Optional;
 public class InvoiceItemServiceImpl implements InvoiceItemService {
     @Autowired
     InvoiceItemRepository invoiceItemRepository;
+    @Autowired
+    ProductServiceImpl productService;
 
     @Override
     public Iterable<InvoiceItem> findAllInvoiceItems(String invoiceId) {
-        return invoiceItemRepository.findInvoiceItemByInvoice_Uuid(invoiceId);
+        return invoiceItemRepository.findInvoiceItemByInvoice_Id(invoiceId);
     }
 
     @Override
@@ -40,5 +42,20 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
         invoice.addInvoiceItem(invoiceItem);
         product.addInvoiceItem(invoiceItem);
         return invoiceItemRepository.save(invoiceItem);
+    }
+
+    @Override
+    public Optional<InvoiceItem> saveInvoiceItem(InvoiceItem item, Invoice invoice) {
+/*        String productId = item.getInvoiceItemPK().getProductId();
+        Optional<Product> product = productService.findProductById(productId);
+        if (product.isPresent()) {
+            item.setProduct(product.get());
+            item.setInvoice(invoice);
+            item.getInvoiceItemPK().setInvoiceId(invoice.getUuid());
+            return Optional.of(invoiceItemRepository.save(item));
+        } else {
+            return Optional.empty();
+        }*/
+    return Optional.empty();
     }
 }

@@ -1,8 +1,12 @@
 package com.example.clientcrud.controllers;
 
+import com.example.clientcrud.dto.request.InvoiceRequestDto;
+import com.example.clientcrud.entities.Client;
 import com.example.clientcrud.entities.Invoice;
+import com.example.clientcrud.entities.Product;
 import com.example.clientcrud.services.ClientServiceImpl;
 import com.example.clientcrud.services.InvoiceServiceImpl;
+import com.example.clientcrud.services.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +20,8 @@ public class InvoiceController {
     InvoiceServiceImpl invoiceService;
     @Autowired
     ClientServiceImpl clientServiceImpl;
+    @Autowired
+    ProductServiceImpl productService;
 
     @GetMapping("/invoice")
     public ResponseEntity<Iterable<Invoice>> getInvoicesList() {
@@ -83,16 +89,19 @@ public class InvoiceController {
     }
 
     @PostMapping("/client/{clientId}/invoices")
-    public ResponseEntity<Invoice> createInvoiceForClient(@RequestBody Invoice invoice,
+    public ResponseEntity<Invoice> createInvoiceForClient(@RequestBody InvoiceRequestDto invoice,
                                                           @PathVariable("clientId") String clientId) {
         try {
-            Invoice addedInvoice = clientServiceImpl.appendInvoice(invoice, clientId);
-            if (addedInvoice == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            Optional<Client> client = clientServiceImpl.findClientById(clientId);
+            Optional<Product> product = productService.findProductById(invoice.getProductId());
+            if (client.isPresent() && product.isPresent()) {
+                Optional<Invoice> addedInvoice = invoiceService.appendInvoiceToClient(invoice,client.get(), product.get());
+                return new ResponseEntity<>(addedInvoice.get(), HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(addedInvoice, HttpStatus.OK);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

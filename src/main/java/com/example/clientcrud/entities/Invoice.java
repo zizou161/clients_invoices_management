@@ -6,27 +6,24 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
+@Getter()
 public class Invoice {
-    @Id
-    private String uuid = UUID.randomUUID().toString();
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @Past
     private Date date;
     @NotNull
     @JsonIgnore
     @ManyToOne
     private Client client;
-    @NotEmpty(message = "Invoice must have at least one element")
-    @OneToMany(mappedBy = "invoice")
+    @NotEmpty
+    @OneToMany(mappedBy = "invoice",cascade = CascadeType.ALL)
     private List<InvoiceItem> invoiceItems = new ArrayList<>();
 
     public void addInvoiceItem(InvoiceItem invoiceItem) {
@@ -37,4 +34,15 @@ public class Invoice {
         this.invoiceItems.add(invoiceItem);
     }
 
+    public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
+        this.invoiceItems = invoiceItems;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 }
