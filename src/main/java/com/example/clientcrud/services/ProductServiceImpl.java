@@ -1,11 +1,16 @@
 package com.example.clientcrud.services;
 
+import com.example.clientcrud.dto.request.ProductRequestDto;
+import com.example.clientcrud.dto.response.ProductResponseDto;
 import com.example.clientcrud.entities.Product;
 import com.example.clientcrud.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -13,13 +18,18 @@ public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
 
     @Override
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
+    public Product saveProduct(ProductRequestDto product) {
+        Product productEntity = new Product();
+        productEntity.setName(product.getName());
+        productEntity.setPrice(product.getPrice());
+        return productRepository.save(productEntity);
     }
 
     @Override
-    public Iterable<Product> findAllProducts() {
-        return productRepository.findAll();
+    public Iterator<ProductResponseDto> findAllProducts() {
+        Iterable<Product> products = productRepository.findAll();
+        Stream<ProductResponseDto> productsStream = StreamSupport.stream(products.spliterator(), true).map(ProductResponseDto::new);
+        return productsStream.iterator();
     }
 
     @Override

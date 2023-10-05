@@ -1,5 +1,7 @@
 package com.example.clientcrud.controllers;
 
+import com.example.clientcrud.dto.request.ProductRequestDto;
+import com.example.clientcrud.dto.response.ProductResponseDto;
 import com.example.clientcrud.entities.Product;
 import com.example.clientcrud.services.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @RestController
 public class ProductController {
@@ -15,10 +19,10 @@ public class ProductController {
     ProductServiceImpl productService;
 
     @GetMapping("/product")
-    public ResponseEntity<Iterable<Product>> getProductsList() {
+    public ResponseEntity<Iterator<ProductResponseDto>> getProductsList() {
         try {
-            Iterable<Product> products = productService.findAllProducts();
-            if (products.iterator().hasNext()) {
+            Iterator<ProductResponseDto> products = productService.findAllProducts();
+            if (products.hasNext()) {
                 return new ResponseEntity<>(products, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -41,7 +45,7 @@ public class ProductController {
     }
 
     @PostMapping("/product")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> createProduct(@RequestBody ProductRequestDto product) {
         try {
             Product productCreated = productService.saveProduct(product);
             return new ResponseEntity<>(productCreated, HttpStatus.CREATED);
