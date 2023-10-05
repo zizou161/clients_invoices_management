@@ -1,11 +1,15 @@
 package com.example.clientcrud.services;
 
+import com.example.clientcrud.dto.response.InvoiceItemResponseDto;
 import com.example.clientcrud.entities.*;
 import com.example.clientcrud.repositories.InvoiceItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 public class InvoiceItemServiceImpl implements InvoiceItemService {
@@ -15,8 +19,10 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     ProductServiceImpl productService;
 
     @Override
-    public Iterable<InvoiceItem> findAllInvoiceItems(String invoiceId) {
-        return invoiceItemRepository.findInvoiceItemByInvoice_Id(invoiceId);
+    public Iterator<InvoiceItemResponseDto> findAllInvoiceItems(String invoiceId) {
+        Stream<InvoiceItemResponseDto> itemsResponseDtoStream = StreamSupport.stream(invoiceItemRepository
+                .findInvoiceItemByInvoice_Id(invoiceId).spliterator(), false).map(InvoiceItemResponseDto::new);
+        return itemsResponseDtoStream.iterator();
     }
 
     @Override
@@ -42,20 +48,5 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
         invoice.addInvoiceItem(invoiceItem);
         product.addInvoiceItem(invoiceItem);
         return invoiceItemRepository.save(invoiceItem);
-    }
-
-    @Override
-    public Optional<InvoiceItem> saveInvoiceItem(InvoiceItem item, Invoice invoice) {
-/*        String productId = item.getInvoiceItemPK().getProductId();
-        Optional<Product> product = productService.findProductById(productId);
-        if (product.isPresent()) {
-            item.setProduct(product.get());
-            item.setInvoice(invoice);
-            item.getInvoiceItemPK().setInvoiceId(invoice.getUuid());
-            return Optional.of(invoiceItemRepository.save(item));
-        } else {
-            return Optional.empty();
-        }*/
-    return Optional.empty();
     }
 }

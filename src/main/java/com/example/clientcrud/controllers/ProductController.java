@@ -4,6 +4,7 @@ import com.example.clientcrud.dto.request.ProductRequestDto;
 import com.example.clientcrud.dto.response.ProductResponseDto;
 import com.example.clientcrud.entities.Product;
 import com.example.clientcrud.services.ProductServiceImpl;
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +34,11 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable String id) {
+    public ResponseEntity<ProductResponseDto> getProductById(@PathVariable String id) {
         try {
             Optional<Product> product = productService.findProductById(id);
             return product
+                    .map(ProductResponseDto::new)
                     .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (Exception ex) {
@@ -55,25 +57,15 @@ public class ProductController {
     }
 
     @PutMapping("/product/{id}")
-    public ResponseEntity<Product> modifyProduct(@PathVariable("id") String id,
-                                                 @RequestBody Product product) {
+    public ResponseEntity<ProductResponseDto> modifyProduct(@PathVariable("id") String id,
+                                                 @RequestBody ProductRequestDto product) {
         try {
-            Product newProductVals = productService.updateProduct(product, id);
+            ProductResponseDto newProductVals = productService.updateProduct(product, id);
             if (newProductVals == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
                 return new ResponseEntity<>(newProductVals, HttpStatus.OK);
             }
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @DeleteMapping("/product/{id}")
-    public ResponseEntity<HttpStatus> deleteProduct(@PathVariable("id") String id) {
-        try {
-            productService.deleteProduct(id);
-            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -38,14 +38,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Product product, String id) {
+    public ProductResponseDto updateProduct(ProductRequestDto product, String id) {
         Optional<Product> productDB = findProductById(id);
         if (productDB.isPresent()) {
             Product newProductVals = productDB.get();
             newProductVals.setName(product.getName());
             newProductVals.setPrice(product.getPrice());
-            newProductVals.setInvoiceItems(product.getInvoiceItems());
-            return productRepository.save(newProductVals);
+            Product productEntity = productRepository.save(newProductVals);
+            return new ProductResponseDto(productEntity);
+
         } else {
             return null;
         }

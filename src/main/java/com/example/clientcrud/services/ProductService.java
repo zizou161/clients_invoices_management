@@ -15,7 +15,7 @@ public interface ProductService {
 
     Optional<Product> findProductById(String id);
 
-    Product updateProduct(Product product, String id);
+    ProductResponseDto updateProduct(ProductRequestDto product, String id);
 
     void deleteProduct(String id);
 

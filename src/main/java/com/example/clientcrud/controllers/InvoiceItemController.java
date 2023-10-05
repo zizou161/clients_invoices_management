@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 @RestController
@@ -27,10 +28,10 @@ public class InvoiceItemController {
     ProductServiceImpl productService;
 
     @GetMapping("/invoice/{invoiceId}/item")
-    public ResponseEntity<Iterable<InvoiceItem>> listItemsOfInvoice(@PathVariable("invoiceId") String invoiceId) {
+    public ResponseEntity<Iterator<InvoiceItemResponseDto>> listItemsOfInvoice(@PathVariable("invoiceId") String invoiceId) {
         try {
-            Iterable<InvoiceItem> invoiceItems = invoiceItemService.findAllInvoiceItems(invoiceId);
-            if (invoiceItems.iterator().hasNext()) {
+            Iterator<InvoiceItemResponseDto> invoiceItems = invoiceItemService.findAllInvoiceItems(invoiceId);
+            if (invoiceItems.hasNext()) {
                 return new ResponseEntity<>(invoiceItems, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -41,10 +42,11 @@ public class InvoiceItemController {
     }
 
     @GetMapping("/invoice_item/{id}")
-    public ResponseEntity<InvoiceItem> getInvoiceItemById(@PathVariable("id") String invoiceItemId) {
+    public ResponseEntity<InvoiceItemResponseDto> getInvoiceItemById(@PathVariable("id") String invoiceItemId) {
         try {
             Optional<InvoiceItem> invoiceItem = invoiceItemService.findInvoiceItemById(invoiceItemId);
             return invoiceItem
+                    .map(InvoiceItemResponseDto::new)
                     .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (Exception ex) {

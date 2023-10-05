@@ -67,20 +67,4 @@ public class ClientController {
         }
     }
 
-    @DeleteMapping("/client/{id}")
-    public ResponseEntity<HttpStatus> deleteClient(@PathVariable("id") String id) {
-        try {
-            clientServiceImpl.deleteClient(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-
-    @PostMapping("/create_dummy_client")
-    public void createDummyClient() {
-        clientServiceImpl.createDummyClient();
-    }
-
 }
