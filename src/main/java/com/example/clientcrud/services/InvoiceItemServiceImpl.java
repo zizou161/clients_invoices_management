@@ -20,13 +20,13 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     }
 
     @Override
-    public Optional<InvoiceItem> findInvoiceItemById(InvoiceItemPK invoiceItemPK) {
-        return invoiceItemRepository.findById(invoiceItemPK);
+    public Optional<InvoiceItem> findInvoiceItemById(String invoiceItemId) {
+        return invoiceItemRepository.findById(invoiceItemId);
     }
 
     @Override
-    public InvoiceItem updateInvoiceItem(InvoiceItem invoiceItem, InvoiceItemPK invoiceItemPK) {
-        Optional<InvoiceItem> invoiceItemDB = findInvoiceItemById(invoiceItemPK);
+    public InvoiceItem updateInvoiceItem(InvoiceItem invoiceItem, String invoiceItemId) {
+        Optional<InvoiceItem> invoiceItemDB = findInvoiceItemById(invoiceItemId);
         if (invoiceItemDB.isPresent()) {
             InvoiceItem newInvoiceItemVals = invoiceItemDB.get();
             newInvoiceItemVals.setQuantity(invoiceItem.getQuantity());

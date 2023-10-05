@@ -53,7 +53,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public Iterable<Invoice> findInvoiceByClient(String clientId) {
-        return invoiceRepository.findInvoiceByClient_Uuid(clientId);
+        return invoiceRepository.findInvoiceByClient_Id(clientId);
     }
 
     @Override

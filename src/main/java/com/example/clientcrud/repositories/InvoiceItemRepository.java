@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface InvoiceItemRepository extends CrudRepository<InvoiceItem, InvoiceItemPK> {
+public interface InvoiceItemRepository extends CrudRepository<InvoiceItem, String> {
      Iterable<InvoiceItem> findInvoiceItemByInvoice_Id(String invoiceId);
 }

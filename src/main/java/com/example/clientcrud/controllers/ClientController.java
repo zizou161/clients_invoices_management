@@ -1,5 +1,6 @@
 package com.example.clientcrud.controllers;
 
+import com.example.clientcrud.dto.request.ClientRequestDto;
 import com.example.clientcrud.entities.Client;
 import com.example.clientcrud.entities.Invoice;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class ClientController {
     }
 
     @PostMapping("/client")
-    public ResponseEntity<Client> createClient(@RequestBody Client client) {
+    public ResponseEntity<Client> createClient(@RequestBody ClientRequestDto client) {
         try {
             Client clientSaved = clientServiceImpl.saveClient(client);
             return new ResponseEntity<>(clientSaved, HttpStatus.CREATED);
@@ -81,6 +82,5 @@ public class ClientController {
     public void createDummyClient() {
         clientServiceImpl.createDummyClient();
     }
-
 
 }

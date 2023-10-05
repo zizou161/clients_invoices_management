@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -16,7 +15,8 @@ import java.util.UUID;
 public class Client {
 
     @Id
-    private String uuid = UUID.randomUUID().toString();
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @NotBlank
     private String name;
     private String address;

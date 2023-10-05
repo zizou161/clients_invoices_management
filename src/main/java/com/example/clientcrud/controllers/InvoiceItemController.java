@@ -40,10 +40,10 @@ public class InvoiceItemController {
         }
     }
 
-    @GetMapping("/invoice_item")
-    public ResponseEntity<InvoiceItem> getInvoiceItemById(@RequestBody InvoiceItemPK invoiceItemPK) {
+    @GetMapping("/invoice_item/{id}")
+    public ResponseEntity<InvoiceItem> getInvoiceItemById(@PathVariable("id") String invoiceItemId) {
         try {
-            Optional<InvoiceItem> invoiceItem = invoiceItemService.findInvoiceItemById(invoiceItemPK);
+            Optional<InvoiceItem> invoiceItem = invoiceItemService.findInvoiceItemById(invoiceItemId);
             return invoiceItem
                     .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));

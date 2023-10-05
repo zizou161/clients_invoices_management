@@ -1,5 +1,6 @@
 package com.example.clientcrud.services;
 
+import com.example.clientcrud.dto.request.ClientRequestDto;
 import com.example.clientcrud.entities.*;
 import com.example.clientcrud.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,11 @@ public class ClientServiceImpl implements ClientService {
     private ClientRepository clientRepository;
 
     @Override
-    public Client saveClient(Client client) {
-        return clientRepository.save(client);
+    public Client saveClient(ClientRequestDto client) {
+        Client clientEntity = new Client();
+        clientEntity.setName(client.getName());
+        clientEntity.setAddress(client.getAddress());
+        return clientRepository.save(clientEntity);
     }
 
     @Override

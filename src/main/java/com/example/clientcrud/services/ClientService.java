@@ -1,5 +1,6 @@
 package com.example.clientcrud.services;
 
+import com.example.clientcrud.dto.request.ClientRequestDto;
 import com.example.clientcrud.entities.Client;
 import com.example.clientcrud.entities.Invoice;
 
@@ -7,7 +8,7 @@ import java.util.Optional;
 
 public interface ClientService {
 
-    Client saveClient(Client client);
+    Client saveClient(ClientRequestDto client);
 
     Iterable<Client> findAllClients();
 
