@@ -1,6 +1,7 @@
 package com.example.clientcrud.controllers;
 
 import com.example.clientcrud.dto.request.InvoiceItemRequestDto;
+import com.example.clientcrud.dto.request.InvoiceItemUpdateRequestDto;
 import com.example.clientcrud.dto.response.InvoiceItemResponseDto;
 import com.example.clientcrud.entities.Invoice;
 import com.example.clientcrud.entities.InvoiceItem;
@@ -69,7 +70,25 @@ public class InvoiceItemController {
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
+    @DeleteMapping("/invoice_item/{id}")
+    public ResponseEntity<HttpStatus> deleteInvoiceItem(@PathVariable("id") String id) {
+        try {
+            invoiceItemService.deleteInvoiceItem(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
+    @PutMapping("/invoice_item/{id}")
+    public ResponseEntity<InvoiceItemResponseDto> modifyInvoiceItem(@PathVariable("id") String id, @RequestBody InvoiceItemUpdateRequestDto invoiceItem) {
+        try {
+            InvoiceItemResponseDto invoiceItemResponse = invoiceItemService.updateInvoiceItem(id, invoiceItem);
+            return new ResponseEntity<>(invoiceItemResponse, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
