@@ -28,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Iterator<ProductResponseDto> findAllProducts() {
         Iterable<Product> products = productRepository.findAll();
-        Stream<ProductResponseDto> productsStream = StreamSupport.stream(products.spliterator(), true).map(ProductResponseDto::new);
+        Stream<ProductResponseDto> productsStream = StreamSupport.stream(products.spliterator(), false).map(ProductResponseDto::new);
         return productsStream.iterator();
     }
 

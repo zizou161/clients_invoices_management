@@ -1,6 +1,7 @@
 package com.example.clientcrud.controllers;
 
 import com.example.clientcrud.dto.request.InvoiceRequestDto;
+import com.example.clientcrud.dto.response.InvoiceResponseDto;
 import com.example.clientcrud.entities.Client;
 import com.example.clientcrud.entities.Invoice;
 import com.example.clientcrud.entities.Product;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 @RestController
@@ -24,10 +26,10 @@ public class InvoiceController {
     ProductServiceImpl productService;
 
     @GetMapping("/invoice")
-    public ResponseEntity<Iterable<Invoice>> getInvoicesList() {
+    public ResponseEntity<Iterator<InvoiceResponseDto>> getInvoicesList() {
         try {
-            Iterable<Invoice> invoices = invoiceService.findAllInvoices();
-            if (invoices.iterator().hasNext()) {
+            Iterator<InvoiceResponseDto> invoices = invoiceService.findAllInvoices();
+            if (invoices.hasNext()) {
                 return new ResponseEntity<>(invoices, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -38,10 +40,11 @@ public class InvoiceController {
     }
 
     @GetMapping("/invoice/{id}")
-    public ResponseEntity<Invoice> searchInvoiceById(@PathVariable("id") String id) {
+    public ResponseEntity<InvoiceResponseDto> searchInvoiceById(@PathVariable("id") String id) {
         try {
             Optional<Invoice> invoice = invoiceService.findInvoiceById(id);
             return invoice
+                    .map(InvoiceResponseDto::new)
                     .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (Exception ex) {
@@ -75,10 +78,10 @@ public class InvoiceController {
     }
 
     @GetMapping("/client/{clientId}/invoices")
-    public ResponseEntity<Iterable<Invoice>> getInvoiceByClientId(@PathVariable("clientId") String clientId) {
+    public ResponseEntity<Iterator<InvoiceResponseDto>> getInvoiceByClientId(@PathVariable("clientId") String clientId) {
         try {
-            Iterable<Invoice> invoices = invoiceService.findInvoiceByClient(clientId);
-            if (invoices.iterator().hasNext()) {
+            Iterator<InvoiceResponseDto> invoices = invoiceService.findInvoiceByClient(clientId);
+            if (invoices.hasNext()) {
                 return new ResponseEntity<>(invoices, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -89,13 +92,13 @@ public class InvoiceController {
     }
 
     @PostMapping("/client/{clientId}/invoices")
-    public ResponseEntity<Invoice> createInvoiceForClient(@RequestBody InvoiceRequestDto invoice,
-                                                          @PathVariable("clientId") String clientId) {
+    public ResponseEntity<InvoiceResponseDto> createInvoiceForClient(@RequestBody InvoiceRequestDto invoice,
+                                                                     @PathVariable("clientId") String clientId) {
         try {
             Optional<Client> client = clientServiceImpl.findClientById(clientId);
             Optional<Product> product = productService.findProductById(invoice.getProductId());
             if (client.isPresent() && product.isPresent()) {
-                Optional<Invoice> addedInvoice = invoiceService.appendInvoiceToClient(invoice,client.get(), product.get());
+                Optional<InvoiceResponseDto> addedInvoice = invoiceService.appendInvoiceToClient(invoice, client.get(), product.get());
                 return new ResponseEntity<>(addedInvoice.get(), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

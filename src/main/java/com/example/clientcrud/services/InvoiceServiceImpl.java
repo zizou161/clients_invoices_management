@@ -1,13 +1,17 @@
 package com.example.clientcrud.services;
 
 import com.example.clientcrud.dto.request.InvoiceRequestDto;
+import com.example.clientcrud.dto.response.InvoiceResponseDto;
 import com.example.clientcrud.entities.*;
 import com.example.clientcrud.repositories.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
@@ -24,8 +28,10 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Iterable<Invoice> findAllInvoices() {
-        return invoiceRepository.findAll();
+    public Iterator<InvoiceResponseDto> findAllInvoices() {
+        Iterable<Invoice> invoices = invoiceRepository.findAll();
+        Stream<InvoiceResponseDto> invoicesStream = StreamSupport.stream(invoices.spliterator(), false).map(InvoiceResponseDto::new);
+        return invoicesStream.iterator();
     }
 
     @Override
@@ -52,12 +58,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Iterable<Invoice> findInvoiceByClient(String clientId) {
-        return invoiceRepository.findInvoiceByClient_Id(clientId);
+    public Iterator<InvoiceResponseDto> findInvoiceByClient(String clientId) {
+        Iterable<Invoice> invoices = invoiceRepository.findInvoiceByClient_Id(clientId);
+        Stream<InvoiceResponseDto> invoicesStream = StreamSupport.stream(invoices.spliterator(), false).map(InvoiceResponseDto::new);
+        return invoicesStream.iterator();
     }
 
     @Override
-    public Optional<Invoice> appendInvoiceToClient(InvoiceRequestDto invoice, Client client, Product product) {
+    public Optional<InvoiceResponseDto> appendInvoiceToClient(InvoiceRequestDto invoice, Client client, Product product) {
         Invoice invoiceEntity = new Invoice();
         InvoiceItem invoiceItem = new InvoiceItem();
         invoiceEntity.setDate(new Date());
@@ -67,7 +75,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoiceItem.setQuantity(invoice.getQuantity());
         invoiceEntity.addInvoiceItem(invoiceItem);
         client.addInvoice(invoiceEntity);
-        return Optional.of(invoiceRepository.save(invoiceEntity));
+        return Optional.of(new InvoiceResponseDto(invoiceRepository.save(invoiceEntity)));
     }
 
 }
