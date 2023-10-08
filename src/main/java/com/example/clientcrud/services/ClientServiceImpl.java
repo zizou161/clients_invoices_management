@@ -1,6 +1,7 @@
 package com.example.clientcrud.services;
 
 import com.example.clientcrud.dto.request.ClientRequestDto;
+import com.example.clientcrud.dto.response.ClientResponseDto;
 import com.example.clientcrud.entities.*;
 import com.example.clientcrud.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -25,8 +29,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Iterable<Client> findAllClients() {
-        return clientRepository.findAll();
+    public Iterator<ClientResponseDto> findAllClients() {
+        Iterable<Client> clients = clientRepository.findAll();
+        Stream<ClientResponseDto> clientsStream = StreamSupport.stream(clients.spliterator(), false).map(ClientResponseDto::new);
+        return clientsStream.iterator();
     }
 
     @Override
@@ -35,14 +41,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client updateClient(Client client, String clientId) {
+    public ClientResponseDto updateClient(ClientRequestDto client, String clientId) {
         Optional<Client> clientDB = findClientById(clientId);
         if (clientDB.isPresent()) {
             Client newClientVals = clientDB.get();
             newClientVals.setName(client.getName());
             newClientVals.setAddress(client.getAddress());
-            newClientVals.setInvoices(client.getInvoices());
-            return clientRepository.save(newClientVals);
+            return new ClientResponseDto(clientRepository.save(newClientVals));
         } else {
             return null;
         }

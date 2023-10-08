@@ -1,14 +1,15 @@
 package com.example.clientcrud.controllers;
 
 import com.example.clientcrud.dto.request.ClientRequestDto;
+import com.example.clientcrud.dto.response.ClientResponseDto;
 import com.example.clientcrud.entities.Client;
-import com.example.clientcrud.entities.Invoice;
+import com.example.clientcrud.services.ClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.clientcrud.services.ClientServiceImpl;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 @RestController
@@ -17,10 +18,10 @@ public class ClientController {
     ClientServiceImpl clientServiceImpl;
 
     @GetMapping("/client")
-    public ResponseEntity<Iterable<Client>> getClientsList() {
+    public ResponseEntity<Iterator<ClientResponseDto>> getClientsList() {
         try {
-            Iterable<Client> clients = clientServiceImpl.findAllClients();
-            if (clients.iterator().hasNext()) {
+            Iterator<ClientResponseDto> clients = clientServiceImpl.findAllClients();
+            if (clients.hasNext()) {
                 return new ResponseEntity<>(clients, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -31,10 +32,11 @@ public class ClientController {
     }
 
     @GetMapping("/client/{id}")
-    public ResponseEntity<Client> getClientById(@PathVariable("id") String id) {
+    public ResponseEntity<ClientResponseDto> getClientById(@PathVariable("id") String id) {
         try {
             Optional<Client> client = clientServiceImpl.findClientById(id);
             return client
+                    .map(ClientResponseDto::new)
                     .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (Exception ex) {
@@ -53,10 +55,10 @@ public class ClientController {
     }
 
     @PutMapping("/client/{id}")
-    public ResponseEntity<Client> modifyClient(@PathVariable("id") String id,
-                                               @RequestBody Client client) {
+    public ResponseEntity<ClientResponseDto> modifyClient(@PathVariable("id") String id,
+                                                          @RequestBody ClientRequestDto client) {
         try {
-            Client newClientVals = clientServiceImpl.updateClient(client, id);
+            ClientResponseDto newClientVals = clientServiceImpl.updateClient(client, id);
             if (newClientVals == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
