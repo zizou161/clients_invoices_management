@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Table(name = "client", schema = "public")
 public class Client {
 
     @Id

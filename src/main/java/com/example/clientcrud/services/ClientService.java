@@ -17,5 +17,6 @@ public interface ClientService {
 
     ClientResponseDto updateClient(ClientRequestDto client, String clientId);
 
+    Iterator<ClientResponseDto> findClientsPagedSorted(Integer pageNo, Integer pageSize, String sortBy);
 
 }

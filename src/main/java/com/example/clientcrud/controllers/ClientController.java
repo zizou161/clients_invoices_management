@@ -69,4 +69,21 @@ public class ClientController {
         }
     }
 
+    @GetMapping("/client/paged")
+    public ResponseEntity<Iterator<ClientResponseDto>> findClientsPagedSorted(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                                              @RequestParam(defaultValue = "10") Integer pageSize,
+                                                                              @RequestParam(defaultValue = "name") String sortBy) {
+        try {
+            Iterator<ClientResponseDto> clients = clientServiceImpl.findClientsPagedSorted(pageNo, pageSize, sortBy);
+            if (clients.hasNext()) {
+                return new ResponseEntity<>(clients, HttpStatus.FOUND);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
 }

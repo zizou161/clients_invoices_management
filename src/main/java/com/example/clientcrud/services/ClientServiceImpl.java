@@ -5,6 +5,9 @@ import com.example.clientcrud.dto.response.ClientResponseDto;
 import com.example.clientcrud.entities.*;
 import com.example.clientcrud.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,6 +26,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client saveClient(ClientRequestDto client) {
         Client clientEntity = new Client();
+        String c = "select * from sche";
         clientEntity.setName(client.getName());
         clientEntity.setAddress(client.getAddress());
         return clientRepository.save(clientEntity);
@@ -55,37 +59,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void deleteClient(String clientId) {
-        clientRepository.deleteById(clientId);
+    public Iterator<ClientResponseDto> findClientsPagedSorted(Integer pageNo, Integer pageSize, String sortBy) {
+        PageRequest pageRequest = PageRequest.of(pageNo,pageSize, Sort.by(sortBy));
+        Page<Client> clientsPaged = clientRepository.findAll(pageRequest);
+        Stream<ClientResponseDto> clientsPagedStream = StreamSupport.stream(clientsPaged.spliterator(), false).map(ClientResponseDto::new);
+        return clientsPagedStream.iterator();
     }
 
-    @Override
-    public Invoice appendInvoice(Invoice invoice, String clientId) {
-        Optional<Client> client = findClientById(clientId);
-        if (client.isPresent()) {
-            client.get().addInvoice(invoice);
-            clientRepository.save(client.get());
-            return invoice;
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public void createDummyClient() {
-        Client client = new Client();
-        Invoice invoice = new Invoice();
-        Product product = new Product();
-        InvoiceItem invoiceItem = new InvoiceItem();
-        client.setName("khorsi mustapha");
-        client.setAddress("cite selem1 n80");
-        invoice.setDate(new Date());
-        product.setName("shampoo");
-        product.setPrice(new BigDecimal(20));
-        invoiceItem.setInvoice(invoice);
-        invoiceItem.setProduct(product);
-        invoiceItem.setQuantity(3);
-        client.addInvoice(invoice);
-        clientRepository.save(client);
-    }
 }
