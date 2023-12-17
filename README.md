@@ -1,5 +1,4 @@
-
-## Client-Invoice Management Web Service
+ ## Client-Invoice Management Web Service
 
 A very simple CRUD SpringBoot application manages clients and invoices running .
 
